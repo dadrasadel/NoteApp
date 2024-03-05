@@ -41,6 +41,7 @@ android {
 
 dependencies {
     implementation(project(":core:shared_ui"))
+    implementation (libs.work.runtime)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -50,6 +50,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
+import com.adel.work.notification.NoteReminderWorker
+import com.adel.work.notification.getNotificationPermission
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun WorkScreen(
@@ -60,7 +66,8 @@ fun WorkScreen(
 
 @Composable
 fun workScreenImpl(navController: NavController?) {
-
+    val context = LocalContext.current
+    var reminderTime=System.currentTimeMillis()+1000
     Scaffold(
         Modifier
             .background(color = MaterialTheme.colorScheme.surface)
@@ -91,7 +98,15 @@ fun workScreenImpl(navController: NavController?) {
                             contentDescription = null
                         )
                     }
-                    IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 16.dp)) {
+                    IconButton(onClick = {
+                        val reminderWorkRequest = OneTimeWorkRequestBuilder<NoteReminderWorker>()
+                            .setInitialDelay(10000, TimeUnit.MILLISECONDS)
+                            .setInputData(workDataOf("title" to "adel title"))
+                            .setInputData(workDataOf("description" to "adel desc"))
+                            .build()
+
+                        WorkManager.getInstance().enqueue(reminderWorkRequest)
+                    }, modifier = Modifier.padding(end = 16.dp)) {
                         Icon(
                             painter = painterResource(id = com.adel.shared_ui.R.drawable.ic_download_circle),
                             tint = Color.Unspecified,
@@ -101,7 +116,7 @@ fun workScreenImpl(navController: NavController?) {
                 }
             }
         }) { padding ->
-        val context = LocalContext.current
+        getNotificationPermission()
         var isEditing = remember { mutableStateOf(false) }
         Box(
             modifier = Modifier

@@ -144,9 +144,7 @@ commons-net= { group = "commons-net", name = "commons-net", version.ref = "commo
 ir_debitcard_scanner= { group = "com.github.arefbhrn", name = "IRDebitCardScanner", version.ref = "ir_debitcard_scanner" }
 glide= { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-compiler= { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
-sqlcipher= { group = "net.zetetic", name = "android-database-sqlcipher", version.ref = "sqlcipher" }
-sqlite= { group = "androidx.sqlite", name = "sqlite", version.ref = "sqlite" }
-security-crypto= { group = "androidx.security", name = "security-crypto", version.ref = "security-crypto" }
+
 #region navigation
 navigation-fragment= { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "nav_version" }
 navigation-fragment-ktx= { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "nav_version" }
@@ -160,6 +158,7 @@ pattern_lock= { group = "com.andrognito.patternlockview", name = "patternlockvie
 lottie-android = { group = "com.airbnb.android", name="lottie", version.ref = "lottieVersion" }
 gss = { group = "com.gss", name="eid-pdf", version.ref = "gssVersion" }
 timber={module="com.jakewharton.timber:timber", version="com.jakewharton.timber:timber"}
+work-runtime={module="androidx.work:work-runtime", version="2.9.0"}
 
 #kmm
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
