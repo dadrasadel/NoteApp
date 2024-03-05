@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="note">note</string>
+    <string name="message">message</string>
+    <string name="settings">settings</string>
+    <string name="audio">audio</string>
+    <string name="all">All</string>
+    <string name="work">Work</string>
+    <string name="life_style">Life Style</string>
+</resources>

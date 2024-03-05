@@ -1,0 +1,210 @@
+[versions]
+accompanistNavigationAnimation = "0.35.0-alpha"
+accompanistSystemuicontroller = "0.27.0"
+coreSplashscreen = "1.1.0-alpha02"
+kotlin = "1.9.22"
+kotlinxCoroutines = "1.7.3"
+androidGradlePlugin = "8.2.1"
+lifecycleRuntimeKtx = "2.7.0"
+org-jetbrains-compose= "1.5.11"
+androidxCore = "1.12.0"
+androidxLifecycle = "2.6.2"
+androidxActivity="1.8.2"
+androidxComposeBom = "2023.10.01"
+room = "2.6.1"
+junit = "4.13.2"
+androidx-test-ext-junit = "1.1.5"
+espresso-core = "3.5.1"
+appcompat = "1.6.1"
+material = "1.10.0"
+data_store = "1.0.0"
+annotation = "1.6.0"
+hilt = "2.48.1"
+hiltExt = "1.1.0"
+ksp = "1.9.22-1.0.16"
+design_version="3.5.0"
+constraint_version="2.1.4"
+fragment="1.5.4"
+swiperefreshlayout="1.1.0"
+serviceAuth="20.4.0"
+iban4j="3.2.1"
+interpolator="1.0.0"
+retrofit="2.9.0"
+okhttp="4.12.0"
+recyclerview="1.2.1"
+arch-lifecycle="1.1.1"
+styleabletoast="2.1.2"
+pinview="1.4.4"
+indicatorseekbar="2.1.2"
+zxing="1.9.13"
+gson="2.10"
+skeleton="1.1.2"
+shimmerlayout="2.1.0"
+loading_button_android="2.2.0"
+android-segmented = "1.0.6"
+emulator-detector ="1.4.0"
+biometric="1.1.0"
+android-spinkit="1.4.0"
+rootbeer-lib="0.0.8"
+advanced_webview="v3.2.1"
+sdp-android="1.0.6"
+target-tooltip="2.0.4"
+sample-tooltip="1.0.0-rc.0"
+pretty-persian-numbers="1.0.4"
+truetime-android="3.5"
+commons-net="3.6"
+ir_debitcard_scanner="1.0.0"
+glide="4.12.0"
+sqlcipher="4.4.3"
+sqlite="2.2.0"
+security-crypto="1.1.0-alpha04"
+nav_version="2.5.3"
+password-strength="1.8.2"
+taptargetview="1.13.3"
+sentry-android="6.17.0"
+pattern_version="1.0.0"
+play-services-auth-api-phone="18.0.1"
+sonarqube="3.1.1"
+org-jetbrains-kotlin-jvm = "1.9.20"
+ktor = "2.3.5"
+napier = "2.6.1"
+koin = "3.5.0"
+lottieVersion="6.3.0"
+gssVersion="9.1.2"
+uiToolingPreviewAndroid = "1.5.4"
+junit-junit = "4.13.2"
+nav-version = "2.7.6"
+sqliteKtx = "2.4.0"
+navigationRuntimeKtx = "2.7.7"
+uiTooling = "1.6.2"
+lifecycle = "2.7.0"
+constraintCompose = "1.0.1"
+
+[libraries]
+accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanistNavigationAnimation" }
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+androidx-lifecycle-runtime-ktx-v270 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
+androidx-activity-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidxActivity" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-compose-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-compose-material= { group = "androidx.compose.material", name = "material" }
+androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version = "1.0.1" }
+lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieVersion" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+android-design = { group = "com.android.support", name = "design", version.ref = "design_version" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraint_version" }
+androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
+swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "serviceAuth" }
+play-services-auth-api-phone = { group = "com.google.android.gms", name = "play-services-auth-api-phone", version.ref = "play-services-auth-api-phone" }
+interpolator = { group = "androidx.interpolator", name = "interpolator", version.ref = "interpolator" }
+androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+
+#network
+converter-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+android-arch-lifecycle = { group = "android.arch.lifecycle", name = "extensions", version.ref = "arch-lifecycle" }
+styleabletoast = { group = "com.muddzdev", name = "styleabletoast", version.ref = "styleabletoast" }
+pinview = { group = "com.chaos.view", name = "pinview", version.ref = "pinview" }
+indicatorseekbar = { group = "com.github.warkiz.widget", name = "indicatorseekbar", version.ref = "indicatorseekbar" }
+zxing = { group = "me.dm7.barcodescanner", name = "zxing", version.ref = "zxing" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+skeleton = { group = "com.ethanhua", name = "skeleton", version.ref = "skeleton" }
+shimmerlayout = { group = "io.supercharge", name = "shimmerlayout", version.ref = "shimmerlayout" }
+loading-button-android = { group = "br.com.simplepass", name = "loading-button-android", version.ref = "loading_button_android" }
+android-segmented = { group = "info.hoang8f", name = "android-segmented", version.ref = "android-segmented" }
+emulator-detector = { group = "com.github.framgia", name = "android-emulator-detector", version.ref = "emulator-detector" }
+biometric = { group = "com.mikhaellopez", name = "biometric", version.ref = "biometric" }
+android-spinkit = { group = "com.github.ybq", name = "Android-SpinKit", version.ref = "android-spinkit" }
+rootbeer-lib = { group = "com.scottyab", name = "rootbeer-lib", version.ref = "rootbeer-lib" }
+advanced_webview= { group = "com.github.delight-im", name = "Android-AdvancedWebView", version.ref = "advanced_webview" }
+sdp-android= { group = "com.intuit.sdp", name = "sdp-android", version.ref = "sdp-android" }
+target-tooltip= { group = "com.github.sephiroth74", name = "android-target-tooltip", version.ref = "target-tooltip" }
+sample-tooltip= { group = "com.github.douglasjunior", name = "android-simple-tooltip", version.ref = "sample-tooltip" }
+pretty-persian-numbers= { group = "com.github.yamin8000", name = "PrettyPersianNumbers", version.ref = "pretty-persian-numbers" }
+truetime-android= { group = "com.github.instacart.truetime-android", name = "library", version.ref = "truetime-android" }
+commons-net= { group = "commons-net", name = "commons-net", version.ref = "commons-net" }
+ir_debitcard_scanner= { group = "com.github.arefbhrn", name = "IRDebitCardScanner", version.ref = "ir_debitcard_scanner" }
+glide= { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+glide-compiler= { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
+sqlcipher= { group = "net.zetetic", name = "android-database-sqlcipher", version.ref = "sqlcipher" }
+sqlite= { group = "androidx.sqlite", name = "sqlite", version.ref = "sqlite" }
+security-crypto= { group = "androidx.security", name = "security-crypto", version.ref = "security-crypto" }
+#region navigation
+navigation-fragment= { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "nav_version" }
+navigation-fragment-ktx= { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "nav_version" }
+navigation-dynamic-features-fragment={module="androidx.navigation:navigation-dynamic-features-fragment", version.ref="nav_version"}
+#endregion
+
+password-strength= { group = "com.nulab-inc", name = "zxcvbn", version.ref = "password-strength" }
+taptargetview= { group = "com.getkeepsafe.taptargetview", name = "taptargetview", version.ref = "taptargetview" }
+sentry-android= { group = "io.sentry", name = "sentry-android", version.ref = "sentry-android" }
+pattern_lock= { group = "com.andrognito.patternlockview", name = "patternlockview", version.ref = "pattern_version" }
+lottie-android = { group = "com.airbnb.android", name="lottie", version.ref = "lottieVersion" }
+gss = { group = "com.gss", name="eid-pdf", version.ref = "gssVersion" }
+timber={module="com.jakewharton.timber:timber", version="com.jakewharton.timber:timber"}
+
+#kmm
+ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+napier = { module = "io.github.aakira:napier", version.ref = "napier" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+
+
+
+#room
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+
+#hilt
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-navigation-compose= {group="androidx.hilt",name="hilt-navigation-compose", version.ref="hiltExt"}
+hilt-navigation-fragment= {group="androidx.hilt",name="hilt-navigation-fragment", version.ref="hiltExt"}
+
+#datastore
+data-store={group="androidx.datastore" ,name="datastore-preferences" ,version.ref="data_store"}
+annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+junit = { group = "junit", name = "junit", version.ref = "junit-junit" }
+androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+com-android-dynamic-feature = { id = "com.android.dynamic-feature", version.ref = "androidGradlePlugin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+jetbrains-compose= { id = "org.jetbrains.compose", version.ref = "org-jetbrains-compose" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kapt = { id = "kapt", version.ref = "kotlin" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
+
+
+[bundles]
+room=["room-compiler","room-ktx","room-runtime"]
+hilt=["hilt-android","hilt-navigation-compose","hilt-navigation-fragment"]
+network=["converter-moshi","retrofit","converter-gson","okhttp","logging-interceptor"]
+fragment-navigation=["navigation-fragment","navigation-fragment-ktx","navigation-dynamic-features-fragment"]
