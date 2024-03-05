@@ -63,9 +63,6 @@ The application follows the MVVM (Model-View-ViewModel) architecture pattern for
 
 Contributions are welcome! If you want to contribute to NoteApp, please fork the repository and submit a pull request.
 
-## License
-
-This project is licensed under the MIT License.
 
 ## Author
 
