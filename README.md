@@ -23,7 +23,7 @@ NoteApp is a modern note-taking application built for Android using Jetpack Comp
 1. Clone the repository:
 
 [//]: # (```bash)
-git clone https://github.com/AdelDdr/NoteApp.git
+    git clone https://github.com/AdelDdr/NoteApp.git
 ## Getting Started
 
 1. **Open the project in Android Studio:** Ensure you have Android Studio installed on your machine. Open Android Studio and select "Open an existing Android Studio project". Navigate to the directory where you have cloned the NoteApp repository and select the root folder.
@@ -37,7 +37,7 @@ The project is organized into several modules:
 - **app:** Main Android application module containing UI and presentation logic.
 - **data:** Module responsible for data handling, including database operations and data sources.
 - **domain:** Module containing business logic and domain entities.
-- **common:** Shared module containing utilities, extensions, and common functionalities.
+- **shared-ui:** Shared module containing utilities, extensions, and common functionalities.
 
 ## Architecture
 
@@ -69,4 +69,4 @@ This project is licensed under the MIT License.
 
 ## Author
 
-Your Name - [Your GitHub Profile](https://github.com/yourusername)
+ [Adel Dadras](https://github.com/AdelDdr)
