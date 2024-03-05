@@ -86,7 +86,7 @@ fun workScreenImpl(navController: NavController?) {
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(
-                            painter = painterResource(id = com.adel.shared_ui.R.drawable.ic_archive_circle),
+                            painter = painterResource(id = com.adel.shared_ui.R.drawable.ic_rington),
                             tint = Color.Unspecified,
                             contentDescription = null
                         )
@@ -208,8 +208,6 @@ fun BottomEditOption(isEditing: MutableState<Boolean>) {
         mutableIntStateOf(0)
     }
     val tabs = arrayListOf<Int>(
-        com.adel.shared_ui.R.drawable.ic_eraser,
-        com.adel.shared_ui.R.drawable.ic_circle_white,
         com.adel.shared_ui.R.drawable.ic_link,
         com.adel.shared_ui.R.drawable.ic_smallcaps,
     )
