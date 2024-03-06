@@ -17,7 +17,7 @@ sealed class NavigationScreen(val route: String) {
 
         object Settings : NavigationScreen("settings_screen")
 
-        object Work : NavigationScreen("work_screen")
+        object NoteDetail : NavigationScreen("note_detail_screen")
 
 
     }

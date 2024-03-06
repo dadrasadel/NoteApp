@@ -1,21 +1,26 @@
 package com.adel.note
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import android.text.format.DateUtils
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -31,6 +36,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -40,23 +48,27 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -65,6 +77,12 @@ import com.adel.data.model.note.TabHeaderItem
 import com.adel.note.state.NotesState
 import com.adel.shared_ui.R
 import com.adel.shared_ui.navigation.NavigationScreen
+import com.adel.shared_ui.widget.ShowDatePickerDialog
+import io.hecpay.util.compareAndFindDay
+import kotlinx.coroutines.delay
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 
 @Composable
@@ -74,7 +92,7 @@ fun NoteScreen(
     NoteScreenImpl(navController)
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun NoteScreenImpl(
     navController: NavController?,
@@ -94,6 +112,12 @@ fun NoteScreenImpl(
     var isGrid by remember {
         mutableStateOf(false)
     }
+    var showDatePicker by remember {
+        mutableStateOf(false)
+    }
+    val dateFormat = SimpleDateFormat("EEEE,dd MMMM", Locale.getDefault())
+
+    var selectedDate  by remember{ mutableLongStateOf(System.currentTimeMillis()) }
     LaunchedEffect(pagerState.currentPage) {
         selectedTab = pagerState.currentPage
     }
@@ -161,19 +185,33 @@ fun NoteScreenImpl(
 
             else -> {}
         }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
                 .background(MaterialTheme.colorScheme.surface)
         ) {
+            if (showDatePicker) {
+                ShowDatePickerDialog(
+                    onDismiss = {showDatePicker = false},
+                    onDateSelected = {date->
+                        selectedDate=date
+                    },
+                    initialDate = selectedDate
+                )
+            }
             ConstraintLayout(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 24.dp)
+                    .clickable {
+                        showDatePicker = true
+                    }
             ) {
+                val dayInMillis = 24 * 60 * 60 * 1000 // Milliseconds in a day
                 val (leftArrow, rightArrow, calendar, date, day) = createRefs()
-                IconButton(onClick = { /*TODO*/ }, modifier = Modifier.constrainAs(leftArrow) {
+                IconButton(onClick = { selectedDate -= dayInMillis }, modifier = Modifier.constrainAs(leftArrow) {
                     end.linkTo(date.start)
                     start.linkTo(parent.start)
                 }) {
@@ -182,7 +220,7 @@ fun NoteScreenImpl(
                         contentDescription = "left_arrow"
                     )
                 }
-                IconButton(onClick = { /*TODO*/ }, modifier = Modifier.constrainAs(rightArrow) {
+                IconButton(onClick = { selectedDate += dayInMillis }, modifier = Modifier.constrainAs(rightArrow) {
                     start.linkTo(date.end)
                     end.linkTo(parent.end)
 
@@ -191,9 +229,6 @@ fun NoteScreenImpl(
                         painter = painterResource(id = R.drawable.ic_arrow_right),
                         contentDescription = "right_arrow"
                     )
-                }
-                Row {
-
                 }
                 Icon(
                     painter = painterResource(id = R.drawable.ic_calendar_2),
@@ -204,12 +239,12 @@ fun NoteScreenImpl(
                     }
                 )
                 Text(
-                    text = "ToDay",
+                    text = compareAndFindDay(selectedDate),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.constrainAs(day) {
                         start.linkTo(calendar.end, margin = 4.dp)
                     })
-                Text(text = "Friday, 9 March",
+                Text(text = dateFormat.format(selectedDate),
                     style = MaterialTheme.typography.labelSmall,
                     color = Color.Gray,
                     modifier = Modifier.constrainAs(date) {
@@ -318,7 +353,8 @@ fun RoundedTabView(
                         BadgedBox(content = {
                             Text(text = tab.count.toString(), color = MaterialTheme.colorScheme.primary,
                                 modifier= Modifier
-                                    .background(shape = CircleShape, color = Color.White).size(20.dp))
+                                    .background(shape = CircleShape, color = Color.White)
+                                    .size(20.dp))
                         }, badge = {})
                     }
 
@@ -394,7 +430,7 @@ fun CardImpl(navController: NavController){
                     Icon(painter = painterResource(id = R.drawable.ic_archive_minus), modifier = Modifier.size(20.dp), tint = Color.Unspecified, contentDescription = null)
 
                 }
-                IconButton(onClick = { navController.navigate(NavigationScreen.Screen.Work.route) }, modifier = Modifier.constrainAs(edit){
+                IconButton(onClick = { navController.navigate(NavigationScreen.Screen.NoteDetail.route) }, modifier = Modifier.constrainAs(edit){
                     end.linkTo(moreIcon.end)
                     top.linkTo(description.bottom)
                 }) {
@@ -460,7 +496,7 @@ fun CardImplGrid(screenWidth:Float,navController: NavController){
                     Icon(painter = painterResource(id = R.drawable.ic_archive_minus), modifier = Modifier.size(20.dp), tint = Color.Unspecified, contentDescription = null)
 
                 }
-                IconButton(onClick = { navController.navigate(NavigationScreen.Screen.Work.route) }, modifier = Modifier.constrainAs(edit){
+                IconButton(onClick = { navController.navigate(NavigationScreen.Screen.NoteDetail.route) }, modifier = Modifier.constrainAs(edit){
                     end.linkTo(moreIcon.end)
                     bottom.linkTo(parent.bottom)
                 }) {
@@ -495,3 +531,4 @@ fun DynamicGrid(screenWidth:Float,isGrid:Boolean,list: List<NoteEntity>,navContr
 
     }
 }
+

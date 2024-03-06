@@ -9,7 +9,7 @@ import com.adel.audio.navigation.audio
 import com.adel.message.navigation.message
 import com.adel.note.navigation.note
 import com.adel.setting.navigation.settings
-import com.adel.work.navigation.work
+import com.adel.note_detail.navigation.noteDetail
 
 
 /**
@@ -35,7 +35,7 @@ fun AppNavigation(
             note(navController,bottomBarState)
             settings(navController,bottomBarState)
             message(navController,bottomBarState)
-            work(navController,bottomBarState)
+            noteDetail(navController,bottomBarState)
         })
 
 }

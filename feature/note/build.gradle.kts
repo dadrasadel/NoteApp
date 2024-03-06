@@ -45,6 +45,7 @@ dependencies {
     implementation(project(":core:shared_ui"))
     implementation(project(":core:data"))
     implementation(project(":core:domain"))
+    implementation(project(":util"))
     implementation (libs.constraintlayout.compose)
     implementation (libs.bundles.hilt)
     kapt(libs.hilt.compiler)

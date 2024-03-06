@@ -70,7 +70,7 @@ dependencies {
     implementation(project(":feature:note"))
     implementation(project(":feature:message"))
     implementation(project(":feature:setting"))
-    implementation(project(":feature:work"))
+    implementation(project(":feature:note_detail"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

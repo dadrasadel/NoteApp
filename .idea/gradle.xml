@@ -18,8 +18,8 @@
             <option value="$PROJECT_DIR$/feature/audio" />
             <option value="$PROJECT_DIR$/feature/message" />
             <option value="$PROJECT_DIR$/feature/note" />
+            <option value="$PROJECT_DIR$/feature/note_detail" />
             <option value="$PROJECT_DIR$/feature/setting" />
-            <option value="$PROJECT_DIR$/feature/work" />
             <option value="$PROJECT_DIR$/util" />
           </set>
         </option>

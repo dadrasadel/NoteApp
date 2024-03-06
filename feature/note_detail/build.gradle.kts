@@ -2,11 +2,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
-    kotlin("kapt")
 }
 
 android {
-    namespace = "com.adel.shared_ui"
+    namespace = "com.adel.note_detail"
     compileSdk = 34
 
     defaultConfig {
@@ -41,23 +40,10 @@ android {
 }
 
 dependencies {
-    /* compose */
-    api(libs.androidx.compose.ui)
-    api(libs.androidx.activity.compose)
-    api(libs.androidx.compose.compose.material3)
-    api(libs.androidx.compose.compose.material)
-    api(libs.androidx.compose.foundation)
-    api(libs.constraintlayout.compose)
-    api(libs.androidx.compose.ui.graphics)
-    api(libs.androidx.ui.tooling.preview.android)
-    api(platform(libs.androidx.compose.bom))
-    api (libs.accompanist.navigation.animation)
-    api(libs.androidx.core.ktx)
-    api(libs.appcompat)
-    api(libs.material)
-    implementation("com.github.bumptech.glide:glide:4.12.0")
-    kapt("com.github.bumptech.glide:compiler:4.12.0")
+    implementation(project(":core:shared_ui"))
+    implementation (libs.work.runtime)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    debugImplementation(libs.androidx.ui.tooling)
 }
