@@ -2,7 +2,10 @@
 
 NoteApp is a modern note-taking application built for Android using Jetpack Compose, Hilt for dependency injection, Room for local database storage, and following the MVVM + Multi-module architecture.
 
-https://github.com/AdelDdr/NoteApp/assets/31399024/8674867b-ab3b-4cb8-8e57-d20219ad113e
+
+https://github.com/AdelDdr/NoteApp/assets/31399024/32e81d81-fde7-4b63-82c4-5f7d16578460
+
+
 
 ## Features
 
