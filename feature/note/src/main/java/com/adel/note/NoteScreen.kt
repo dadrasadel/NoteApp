@@ -1,11 +1,5 @@
 package com.adel.note
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
-import android.text.format.DateUtils
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -36,9 +30,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -48,10 +39,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
@@ -62,13 +51,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -80,10 +67,8 @@ import com.adel.shared_ui.R
 import com.adel.shared_ui.navigation.NavigationScreen
 import com.adel.shared_ui.widget.ShowDatePickerDialog
 import com.google.gson.Gson
-import io.hecpay.util.compareAndFindDay
-import kotlinx.coroutines.delay
+import com.adel.util.compareAndFindDay
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Locale
 
 
@@ -251,7 +236,7 @@ fun NoteScreenImpl(
                     }
                 )
                 Text(
-                    text = compareAndFindDay(selectedDate),
+                    text = com.adel.util.compareAndFindDay(selectedDate),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.constrainAs(day) {
                         start.linkTo(calendar.end, margin = 4.dp)

@@ -27,32 +27,16 @@ constraint_version="2.1.4"
 fragment="1.5.4"
 swiperefreshlayout="1.1.0"
 serviceAuth="20.4.0"
-iban4j="3.2.1"
 interpolator="1.0.0"
 retrofit="2.9.0"
 okhttp="4.12.0"
 recyclerview="1.2.1"
 arch-lifecycle="1.1.1"
-styleabletoast="2.1.2"
-pinview="1.4.4"
-indicatorseekbar="2.1.2"
-zxing="1.9.13"
 gson="2.10"
-skeleton="1.1.2"
-shimmerlayout="2.1.0"
-loading_button_android="2.2.0"
 android-segmented = "1.0.6"
 emulator-detector ="1.4.0"
 biometric="1.1.0"
 android-spinkit="1.4.0"
-rootbeer-lib="0.0.8"
-advanced_webview="v3.2.1"
-sdp-android="1.0.6"
-target-tooltip="2.0.4"
-sample-tooltip="1.0.0-rc.0"
-pretty-persian-numbers="1.0.4"
-truetime-android="3.5"
-commons-net="3.6"
 ir_debitcard_scanner="1.0.0"
 glide="4.12.0"
 sqlcipher="4.4.3"
@@ -103,7 +87,6 @@ androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-android-design = { group = "com.android.support", name = "design", version.ref = "design_version" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraint_version" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
 swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
@@ -119,29 +102,10 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 android-arch-lifecycle = { group = "android.arch.lifecycle", name = "extensions", version.ref = "arch-lifecycle" }
-styleabletoast = { group = "com.muddzdev", name = "styleabletoast", version.ref = "styleabletoast" }
-pinview = { group = "com.chaos.view", name = "pinview", version.ref = "pinview" }
-indicatorseekbar = { group = "com.github.warkiz.widget", name = "indicatorseekbar", version.ref = "indicatorseekbar" }
-zxing = { group = "me.dm7.barcodescanner", name = "zxing", version.ref = "zxing" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
-skeleton = { group = "com.ethanhua", name = "skeleton", version.ref = "skeleton" }
-shimmerlayout = { group = "io.supercharge", name = "shimmerlayout", version.ref = "shimmerlayout" }
-loading-button-android = { group = "br.com.simplepass", name = "loading-button-android", version.ref = "loading_button_android" }
-android-segmented = { group = "info.hoang8f", name = "android-segmented", version.ref = "android-segmented" }
 emulator-detector = { group = "com.github.framgia", name = "android-emulator-detector", version.ref = "emulator-detector" }
-biometric = { group = "com.mikhaellopez", name = "biometric", version.ref = "biometric" }
 android-spinkit = { group = "com.github.ybq", name = "Android-SpinKit", version.ref = "android-spinkit" }
-rootbeer-lib = { group = "com.scottyab", name = "rootbeer-lib", version.ref = "rootbeer-lib" }
-advanced_webview= { group = "com.github.delight-im", name = "Android-AdvancedWebView", version.ref = "advanced_webview" }
-sdp-android= { group = "com.intuit.sdp", name = "sdp-android", version.ref = "sdp-android" }
-target-tooltip= { group = "com.github.sephiroth74", name = "android-target-tooltip", version.ref = "target-tooltip" }
-sample-tooltip= { group = "com.github.douglasjunior", name = "android-simple-tooltip", version.ref = "sample-tooltip" }
-pretty-persian-numbers= { group = "com.github.yamin8000", name = "PrettyPersianNumbers", version.ref = "pretty-persian-numbers" }
-truetime-android= { group = "com.github.instacart.truetime-android", name = "library", version.ref = "truetime-android" }
-commons-net= { group = "commons-net", name = "commons-net", version.ref = "commons-net" }
-ir_debitcard_scanner= { group = "com.github.arefbhrn", name = "IRDebitCardScanner", version.ref = "ir_debitcard_scanner" }
 glide= { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-compiler= { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
 
@@ -151,12 +115,6 @@ navigation-fragment-ktx= { group = "androidx.navigation", name = "navigation-ui-
 navigation-dynamic-features-fragment={module="androidx.navigation:navigation-dynamic-features-fragment", version.ref="nav_version"}
 #endregion
 
-password-strength= { group = "com.nulab-inc", name = "zxcvbn", version.ref = "password-strength" }
-taptargetview= { group = "com.getkeepsafe.taptargetview", name = "taptargetview", version.ref = "taptargetview" }
-sentry-android= { group = "io.sentry", name = "sentry-android", version.ref = "sentry-android" }
-pattern_lock= { group = "com.andrognito.patternlockview", name = "patternlockview", version.ref = "pattern_version" }
-lottie-android = { group = "com.airbnb.android", name="lottie", version.ref = "lottieVersion" }
-gss = { group = "com.gss", name="eid-pdf", version.ref = "gssVersion" }
 timber={module="com.jakewharton.timber:timber", version="com.jakewharton.timber:timber"}
 work-runtime={module="androidx.work:work-runtime", version="2.9.0"}
 
@@ -168,6 +126,15 @@ napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 
+
+#test
+jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.6.0" }
+mockito_core = { module = "org.mockito:mockito-core", version = "4.2.0" }
+mockito_inline = { module = "org.mockito:mockito-inline", version = "3.2.0" }
+mockito_kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version = "3.2.0" }
+core_testing = { module = "androidx.arch.core:core-testing", version = "2.1.0" }
+junit_ext = { module = "androidx.test.ext:junit", version = "1.1.4" }
+kotlinx_coroutines_test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version = "1.4.2" }
 
 
 #room
@@ -192,13 +159,10 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", vers
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-com-android-dynamic-feature = { id = "com.android.dynamic-feature", version.ref = "androidGradlePlugin" }
-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 jetbrains-compose= { id = "org.jetbrains.compose", version.ref = "org-jetbrains-compose" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kapt = { id = "kapt", version.ref = "kotlin" }
-sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
 
 

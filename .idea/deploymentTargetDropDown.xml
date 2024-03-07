@@ -2,9 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="ShowWorkScreen">
-        <State />
-      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>
@@ -20,9 +17,6 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-03-05T16:13:39.195932Z" />
         </State>
-      </entry>
-      <entry key="showSheet">
-        <State />
       </entry>
     </value>
   </component>
