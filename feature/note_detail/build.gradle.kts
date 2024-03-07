@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    kotlin("kapt")
 }
 
 android {
@@ -41,6 +42,11 @@ android {
 
 dependencies {
     implementation(project(":core:shared_ui"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:data"))
+    implementation(libs.gson)
+    implementation (libs.bundles.hilt)
+    kapt(libs.hilt.compiler)
     implementation (libs.work.runtime)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

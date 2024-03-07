@@ -55,6 +55,7 @@ dependencies {
     api(libs.androidx.core.ktx)
     api(libs.appcompat)
     api(libs.material)
+    implementation(project(":core:data"))
     implementation("com.github.bumptech.glide:glide:4.12.0")
     kapt("com.github.bumptech.glide:compiler:4.12.0")
     testImplementation(libs.junit)

@@ -28,14 +28,15 @@ fun DynamicTextView(
     initialText: String,
     modifier: Modifier = Modifier,
     txtStyle: TextStyle?=MaterialTheme.typography.titleSmall,
-    isEditing:MutableState<Boolean>
+    isEditing:MutableState<Boolean>,
+    text:MutableState<String>
+
 ) {
-    var text by remember { mutableStateOf("") }
     if (isEditing.value) {
         OutlinedTextField(
-            value = text,
+            value = text.value,
             onValueChange = { newText ->
-                text = newText
+                text.value = newText
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done,
@@ -49,7 +50,7 @@ fun DynamicTextView(
 
     } else {
         Text(
-            text = text,
+            text = text.value,
             style = txtStyle!!,
             modifier = modifier
                 .clickable {

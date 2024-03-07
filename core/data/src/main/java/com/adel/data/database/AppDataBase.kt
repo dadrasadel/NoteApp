@@ -12,6 +12,7 @@ import com.adel.data.model.note.NoteEntity
     ],
     version = Constant.VERSION
 )
+@TypeConverters
 internal abstract class AppDataBase : RoomDatabase() {
     abstract val noteDao: NoteDao
 }

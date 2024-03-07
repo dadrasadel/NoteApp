@@ -73,11 +73,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.adel.data.model.note.NoteEntity
+import com.adel.data.model.note.NoteType
 import com.adel.data.model.note.TabHeaderItem
 import com.adel.note.state.NotesState
 import com.adel.shared_ui.R
 import com.adel.shared_ui.navigation.NavigationScreen
 import com.adel.shared_ui.widget.ShowDatePickerDialog
+import com.google.gson.Gson
 import io.hecpay.util.compareAndFindDay
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
@@ -117,15 +119,21 @@ fun NoteScreenImpl(
     }
     val dateFormat = SimpleDateFormat("EEEE,dd MMMM", Locale.getDefault())
 
-    var selectedDate  by remember{ mutableLongStateOf(System.currentTimeMillis()) }
+    var selectedDate by remember { mutableLongStateOf(System.currentTimeMillis()) }
     LaunchedEffect(pagerState.currentPage) {
         selectedTab = pagerState.currentPage
     }
     LaunchedEffect(selectedTab) {
         pagerState.animateScrollToPage(selectedTab)
     }
-    val screenWidth= with(LocalDensity.current){
+    LaunchedEffect(selectedDate) {
+        noteViewModel.getNoteList(selectedDate)
+    }
+    val screenWidth = with(LocalDensity.current) {
         LocalConfiguration.current.screenWidthDp.dp.toPx()
+    }
+    LaunchedEffect(Unit) {
+        noteViewModel.getNoteList(selectedDate)
     }
 
     Scaffold(
@@ -177,10 +185,10 @@ fun NoteScreenImpl(
         },
 
         ) {
-        when(val noteState=noteStateList){
-            is NotesState.Success->{
-                tabList=noteState.tabList
-                noteList=noteState.noteList
+        when (val noteState = noteStateList) {
+            is NotesState.Success -> {
+                tabList = noteState.tabList
+                noteList = noteState.noteList
             }
 
             else -> {}
@@ -194,9 +202,9 @@ fun NoteScreenImpl(
         ) {
             if (showDatePicker) {
                 ShowDatePickerDialog(
-                    onDismiss = {showDatePicker = false},
-                    onDateSelected = {date->
-                        selectedDate=date
+                    onDismiss = { showDatePicker = false },
+                    onDateSelected = { date ->
+                        selectedDate = date
                     },
                     initialDate = selectedDate
                 )
@@ -211,20 +219,24 @@ fun NoteScreenImpl(
             ) {
                 val dayInMillis = 24 * 60 * 60 * 1000 // Milliseconds in a day
                 val (leftArrow, rightArrow, calendar, date, day) = createRefs()
-                IconButton(onClick = { selectedDate -= dayInMillis }, modifier = Modifier.constrainAs(leftArrow) {
-                    end.linkTo(date.start)
-                    start.linkTo(parent.start)
-                }) {
+                IconButton(
+                    onClick = { selectedDate -= dayInMillis },
+                    modifier = Modifier.constrainAs(leftArrow) {
+                        end.linkTo(date.start)
+                        start.linkTo(parent.start)
+                    }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_left),
                         contentDescription = "left_arrow"
                     )
                 }
-                IconButton(onClick = { selectedDate += dayInMillis }, modifier = Modifier.constrainAs(rightArrow) {
-                    start.linkTo(date.end)
-                    end.linkTo(parent.end)
+                IconButton(
+                    onClick = { selectedDate += dayInMillis },
+                    modifier = Modifier.constrainAs(rightArrow) {
+                        start.linkTo(date.end)
+                        end.linkTo(parent.end)
 
-                }) {
+                    }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_right),
                         contentDescription = "right_arrow"
@@ -290,17 +302,23 @@ fun NoteScreenImpl(
                         .padding(top = 24.dp, start = 16.dp, end = 16.dp)
 
                 ) {
-                    Row(modifier = Modifier
-                        .fillMaxWidth()
-                        .height(IntrinsicSize.Max),
-                        verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(IntrinsicSize.Max),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Text(text = "Recent All Note", style = MaterialTheme.typography.titleMedium)
                         Spacer(modifier = Modifier.weight(1f))
-                        IconButton(onClick = { isGrid=!isGrid }) {
-                            Icon(painter = painterResource(id=if(!isGrid)
-                                R.drawable.ic_row_vertical
-                                        else
-                                R.drawable.ic_grid ), contentDescription = "grid_menu")
+                        IconButton(onClick = { isGrid = !isGrid }) {
+                            Icon(
+                                painter = painterResource(
+                                    id = if (!isGrid)
+                                        R.drawable.ic_row_vertical
+                                    else
+                                        R.drawable.ic_grid
+                                ), contentDescription = "grid_menu"
+                            )
                         }
                         Divider(
                             modifier = Modifier
@@ -309,10 +327,37 @@ fun NoteScreenImpl(
                                 .padding(vertical = 12.dp)
                         )
                         IconButton(onClick = { /*TODO*/ }) {
-                            Icon(painter = painterResource(id = R.drawable.ic_search_normal), contentDescription = "grid_menu")
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_search_normal),
+                                contentDescription = "grid_menu"
+                            )
                         }
                     }
-                    DynamicGrid(screenWidth,isGrid,noteList,navController!!)
+                    when (index) {
+                        0 -> {
+                            DynamicGrid(screenWidth, isGrid, noteList, navController!!)
+                        }
+
+                        1 -> {
+                            DynamicGrid(
+                                screenWidth,
+                                isGrid,
+                                noteList.filter { it.type == NoteType.Work.noteName },
+                                navController!!
+                            )
+                        }
+
+                        2 -> {
+                            DynamicGrid(
+                                screenWidth,
+                                isGrid,
+                                noteList.filter { it.type == NoteType.LifeStyle.noteName },
+                                navController!!
+                            )
+                        }
+                    }
+
+
                 }
             }
 
@@ -345,22 +390,29 @@ fun RoundedTabView(
     ) {
         tabs.forEachIndexed { index, tab ->
             Tab(
-                text = { if(index==selectedTabIndex){
-                    Row(modifier=Modifier, verticalAlignment = Alignment.CenterVertically) {
-                        Text(tab.title, maxLines = 1,modifier=Modifier.widthIn(max = 36.dp),
-                            overflow = TextOverflow.Ellipsis)
-                        Spacer(modifier = Modifier.padding(start = 4.dp))
-                        BadgedBox(content = {
-                            Text(text = tab.count.toString(), color = MaterialTheme.colorScheme.primary,
-                                modifier= Modifier
-                                    .background(shape = CircleShape, color = Color.White)
-                                    .size(20.dp))
-                        }, badge = {})
-                    }
+                text = {
+                    if (index == selectedTabIndex) {
+                        Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                tab.title, maxLines = 1, modifier = Modifier.widthIn(max = 36.dp),
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Spacer(modifier = Modifier.padding(start = 4.dp))
+                            BadgedBox(content = {
+                                Text(
+                                    text = tab.count.toString(),
+                                    color = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier
+                                        .background(shape = CircleShape, color = Color.White)
+                                        .size(20.dp)
+                                )
+                            }, badge = {})
+                        }
 
-                }else{
-                    Text(tab.title)
-                } },
+                    } else {
+                        Text(tab.title)
+                    }
+                },
                 selected = selectedTabIndex == index,
                 selectedContentColor = Color.White,
                 unselectedContentColor = MaterialTheme.colorScheme.primary,
@@ -380,151 +432,209 @@ fun RoundedTabView(
 
 
 }
+
 @Composable
-fun CardImpl(navController: NavController){
-    Card (shape = RoundedCornerShape(16.dp),
+fun CardImpl(navController: NavController, noteEntity: NoteEntity) {
+    Card(
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
             .padding(top = 16.dp)
-            .fillMaxWidth()){
-            ConstraintLayout(modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        ConstraintLayout(
+            modifier = Modifier
                 .padding(8.dp)
-                .fillMaxWidth()) {
-                val(title,moreIcon,description,icon,edit,archive) = createRefs()
-                Text(text = "Heli Wbsite Design", style = MaterialTheme.typography.titleMedium, modifier = Modifier.constrainAs(title){
+                .fillMaxWidth()
+        ) {
+            val (title, moreIcon, description, icon, edit, archive) = createRefs()
+            Text(
+                text = noteEntity.title,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.constrainAs(title) {
                     top.linkTo(moreIcon.top)
                     bottom.linkTo(moreIcon.bottom)
                     start.linkTo(parent.start, margin = 8.dp)
                 })
-                IconButton(onClick = { /*TODO*/ }, modifier = Modifier.constrainAs(moreIcon){
-                    end.linkTo(parent.end)
-                }) {
-                    Icon(painter = painterResource(id = R.drawable.ic_group), tint = Color.Unspecified, contentDescription = "ic_group")
-
-                }
-
-                Icon(painter = painterResource(id = R.drawable.ic_avatar_group),
+            IconButton(onClick = { /*TODO*/ }, modifier = Modifier.constrainAs(moreIcon) {
+                end.linkTo(parent.end)
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_group),
                     tint = Color.Unspecified,
-                    contentDescription = null, modifier = Modifier
-                        .size(40.dp)
-                        .constrainAs(icon) {
-                            top.linkTo(description.bottom)
-                            start.linkTo(title.start)
-                        })
-                Text(
-                    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .constrainAs(description) {
-                            top.linkTo(title.bottom, margin = 8.dp)
-                            start.linkTo(parent.start, margin = 16.dp)
-                            end.linkTo(parent.end, margin = 16.dp)
-                        }
+                    contentDescription = "ic_group"
                 )
-                IconButton(onClick = { /*TODO*/ }, modifier = Modifier.constrainAs(archive){
-                    end.linkTo(edit.start)
-                    top.linkTo(edit.top, margin = 4.dp)
-                    bottom.linkTo(edit.bottom, margin = 4.dp)
-                }) {
-                    Icon(painter = painterResource(id = R.drawable.ic_archive_minus), modifier = Modifier.size(20.dp), tint = Color.Unspecified, contentDescription = null)
 
-                }
-                IconButton(onClick = { navController.navigate(NavigationScreen.Screen.NoteDetail.route) }, modifier = Modifier.constrainAs(edit){
+            }
+
+            Icon(painter = painterResource(id = R.drawable.ic_avatar_group),
+                tint = Color.Unspecified,
+                contentDescription = null, modifier = Modifier
+                    .size(40.dp)
+                    .constrainAs(icon) {
+                        top.linkTo(description.bottom)
+                        start.linkTo(title.start)
+                    })
+            Text(
+                text = noteEntity.content,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .constrainAs(description) {
+                        top.linkTo(title.bottom, margin = 8.dp)
+                        start.linkTo(parent.start)
+                    }
+            )
+            IconButton(onClick = { /*TODO*/ }, modifier = Modifier.constrainAs(archive) {
+                end.linkTo(edit.start)
+                top.linkTo(edit.top, margin = 4.dp)
+                bottom.linkTo(edit.bottom, margin = 4.dp)
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_archive_minus),
+                    modifier = Modifier.size(20.dp),
+                    tint = Color.Unspecified,
+                    contentDescription = null
+                )
+
+            }
+            IconButton(
+                onClick = {
+                    val gson= Gson()
+                    val json=gson.toJson(noteEntity)
+                    navController.navigate(
+                        "${NavigationScreen.Screen.NoteDetail.route}?noteType=${noteEntity.type}&userEntity=$json"
+                    )
+                },
+                modifier = Modifier.constrainAs(edit) {
                     end.linkTo(moreIcon.end)
                     top.linkTo(description.bottom)
                 }) {
-                    Icon(painter = painterResource(id = R.drawable.ic_edit), tint = Color.Unspecified, contentDescription = "ic_group")
-
-                }
-
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_edit),
+                    tint = Color.Unspecified,
+                    contentDescription = "ic_group"
+                )
 
             }
+
+
+        }
     }
 }
 
 @Composable
-fun CardImplGrid(screenWidth:Float,navController: NavController){
+fun CardImplGrid(screenWidth: Float, navController: NavController, noteEntity: NoteEntity) {
 
     val itemWidth = (screenWidth / 4).dp
-    Card (shape = RoundedCornerShape(16.dp),
+    Card(
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = Modifier
             .padding(top = 16.dp, end = 16.dp)
             .width(itemWidth)
-            .fillMaxHeight()){
-            ConstraintLayout(modifier = Modifier
+            .fillMaxHeight()
+    ) {
+        ConstraintLayout(
+            modifier = Modifier
                 .padding(4.dp)
-                .fillMaxSize()) {
-                val(title,moreIcon,description,icon,edit,archive) = createRefs()
-                Text(text = "Heli Wbsite Design", style = MaterialTheme.typography.titleMedium, modifier = Modifier.constrainAs(title){
+                .fillMaxSize()
+        ) {
+            val (title, moreIcon, description, icon, edit, archive) = createRefs()
+            Text(
+                text = noteEntity.title,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.constrainAs(title) {
                     top.linkTo(moreIcon.top)
                     bottom.linkTo(moreIcon.bottom)
                     start.linkTo(parent.start, margin = 8.dp)
                 })
-                IconButton(onClick = { /*TODO*/ }, modifier = Modifier.constrainAs(moreIcon){
-                    end.linkTo(parent.end)
-                }) {
-                    Icon(painter = painterResource(id = R.drawable.ic_group), tint = Color.Unspecified, contentDescription = "ic_group")
-
-                }
-
-                Icon(painter = painterResource(id = R.drawable.ic_avatar_group),
+            IconButton(onClick = { /*TODO*/ }, modifier = Modifier.constrainAs(moreIcon) {
+                end.linkTo(parent.end)
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_group),
                     tint = Color.Unspecified,
-                    contentDescription = null, modifier = Modifier
-                        .size(40.dp)
-                        .constrainAs(icon) {
-                            bottom.linkTo(parent.bottom)
-                            start.linkTo(title.start)
-                        })
-                Text(
-                    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .constrainAs(description) {
-                            top.linkTo(title.bottom, margin = 8.dp)
-                            start.linkTo(parent.start, margin = 16.dp)
-                            end.linkTo(parent.end, margin = 16.dp)
-                        }
+                    contentDescription = "ic_group"
                 )
-                IconButton(onClick = { /*TODO*/ }, modifier = Modifier.constrainAs(archive){
-                    end.linkTo(edit.start)
-                    top.linkTo(edit.top, margin = 4.dp)
-                    bottom.linkTo(edit.bottom, margin = 4.dp)
-                }) {
-                    Icon(painter = painterResource(id = R.drawable.ic_archive_minus), modifier = Modifier.size(20.dp), tint = Color.Unspecified, contentDescription = null)
-
-                }
-                IconButton(onClick = { navController.navigate(NavigationScreen.Screen.NoteDetail.route) }, modifier = Modifier.constrainAs(edit){
-                    end.linkTo(moreIcon.end)
-                    bottom.linkTo(parent.bottom)
-                }) {
-                    Icon(painter = painterResource(id = R.drawable.ic_edit), tint = Color.Unspecified, contentDescription = "ic_group")
-
-                }
-
 
             }
+
+            Icon(painter = painterResource(id = R.drawable.ic_avatar_group),
+                tint = Color.Unspecified,
+                contentDescription = null, modifier = Modifier
+                    .size(40.dp)
+                    .constrainAs(icon) {
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(title.start)
+                    })
+            Text(
+                text = noteEntity.content,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .constrainAs(description) {
+                        top.linkTo(title.bottom, margin = 8.dp)
+                        start.linkTo(parent.start)
+                    }
+            )
+            IconButton(onClick = { /*TODO*/ }, modifier = Modifier.constrainAs(archive) {
+                end.linkTo(edit.start)
+                top.linkTo(edit.top, margin = 4.dp)
+                bottom.linkTo(edit.bottom, margin = 4.dp)
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_archive_minus),
+                    modifier = Modifier.size(20.dp),
+                    tint = Color.Unspecified,
+                    contentDescription = null
+                )
+
+            }
+            IconButton(onClick = {
+                val gson= Gson()
+                val json=gson.toJson(noteEntity)
+                navController.navigate(
+                    "${NavigationScreen.Screen.NoteDetail.route}?noteType=${noteEntity.type}&userEntity=$json"
+                )
+            }, modifier = Modifier.constrainAs(edit) {
+                end.linkTo(moreIcon.end)
+                bottom.linkTo(parent.bottom)
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_edit),
+                    tint = Color.Unspecified,
+                    contentDescription = "ic_group"
+                )
+
+            }
+
+
+        }
     }
 }
 
 @Composable
-fun DynamicGrid(screenWidth:Float,isGrid:Boolean,list: List<NoteEntity>,navController: NavController){
+fun DynamicGrid(
+    screenWidth: Float,
+    isGrid: Boolean,
+    list: List<NoteEntity>,
+    navController: NavController
+) {
 
-    Crossfade(targetState = !isGrid, label = "") { targetGrid->
-        if(!targetGrid)
+    Crossfade(targetState = !isGrid, label = "") { targetGrid ->
+        if (!targetGrid)
             LazyHorizontalGrid(
                 rows = GridCells.Fixed(2),
-                userScrollEnabled = true, content ={
-                items(list.size+3){
-                    CardImplGrid(screenWidth,navController)
-                }
-            } )
+                userScrollEnabled = true, content = {
+                    items(list.size) { index ->
+                        CardImplGrid(screenWidth, navController, list[index])
+                    }
+                })
         else
             LazyColumn(content = {
-                items(list.size+1){
-                    CardImpl(navController)
+                items(list.size) { index ->
+                    CardImpl(navController, list[index])
                 }
             })
 

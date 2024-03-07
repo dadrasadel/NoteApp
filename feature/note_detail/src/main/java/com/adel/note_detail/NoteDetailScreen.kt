@@ -1,8 +1,10 @@
 package com.adel.note_detail
 
 import android.icu.util.Calendar
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -43,16 +46,17 @@ import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -60,10 +64,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.adel.data.model.note.NoteEntity
+import com.adel.data.model.note.NoteType
+import com.adel.note_detail.image.LoadImageFromFile
+import com.adel.note_detail.image.getRealImagePath
 import com.adel.note_detail.notification.NoteReminderWorker
 import com.adel.note_detail.notification.getNotificationPermission
 import com.adel.shared_ui.theme.lineGray
@@ -73,9 +82,11 @@ import com.adel.shared_ui.widget.AppTimePicker
 import com.adel.shared_ui.widget.DynamicTextView
 import com.adel.shared_ui.widget.ImageViewWithGallery
 import com.adel.shared_ui.widget.ShowDatePickerDialog
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+
 
 @Composable
 fun NoteDetailScreen(
@@ -88,20 +99,48 @@ fun NoteDetailScreen(
 @Composable
 fun NoteDetailScreenImpl(
     navController: NavController?,
-    arguments: Bundle?
+    arguments: Bundle?,
+    viewModel: NoteDetialViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     var reminderTime = remember {
         mutableLongStateOf(0)
     }
     val dateFormat = SimpleDateFormat("dd MMMM,hh:mm", Locale.getDefault())
-
+    // State to hold the selected image URI
+    val selectedImageUri = remember { mutableStateOf<Uri?>(null) }
     var showBottomSheet = remember {
         mutableStateOf(false)
     }
     val isTitleEditing = remember { mutableStateOf(true) }
     val isDescriptionEditing = remember { mutableStateOf(false) }
-    val isEditing = remember { mutableStateOf(false) }
+    val openGallery = rememberSaveable {
+        mutableStateOf(false)
+    }
+    var titleTxt = remember { mutableStateOf("") }
+    var descriptionTxt = remember { mutableStateOf("") }
+    var imagePath = remember { mutableStateOf<String?>(null) }
+    val bitmapState = remember { mutableStateOf<ImageBitmap?>(null) }
+    var justShow by remember {
+        mutableStateOf(false)
+    }
+    arguments?.getString("userEntity")?.let { result ->
+        val gson = Gson()
+        val data = gson.fromJson(result, NoteEntity::class.java)
+        titleTxt.value = data.title
+        descriptionTxt.value = data.content
+        reminderTime.value = data.timeNotified!!
+        data.image?.let {
+            LoadImageFromFile(data.image!!, bitmapState)
+        }
+        isTitleEditing.value = false
+        justShow = true
+        isDescriptionEditing.value = false
+        isTitleEditing.value=false
+        return@let data
+    }
+
+
     Scaffold(
         Modifier
             .background(color = MaterialTheme.colorScheme.surface)
@@ -128,33 +167,58 @@ fun NoteDetailScreenImpl(
                         )
                     }
                     Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = {
-                        showBottomSheet.value = true
-                    }) {
-                        Icon(
-                            painter = painterResource(id = com.adel.shared_ui.R.drawable.ic_rington),
-                            tint = Color.Unspecified,
-                            contentDescription = null
-                        )
-                    }
-                    IconButton(onClick = {
-                        val reminderWorkRequest = OneTimeWorkRequestBuilder<NoteReminderWorker>()
-                            .setInitialDelay(10000, TimeUnit.MILLISECONDS)
-                            .setInputData(workDataOf("title" to "adel title"))
-                            .setInputData(workDataOf("description" to "adel desc"))
-                            .build()
+                    if (!justShow) {
 
-                        WorkManager.getInstance().enqueue(reminderWorkRequest)
-                    }, modifier = Modifier.padding(end = 16.dp)) {
-                        Icon(
-                            painter = painterResource(id = com.adel.shared_ui.R.drawable.ic_download_circle),
-                            tint = Color.Unspecified,
-                            contentDescription = null
-                        )
+                        IconButton(onClick = {
+                            showBottomSheet.value = true
+                        }) {
+                            Icon(
+                                painter = painterResource(id = com.adel.shared_ui.R.drawable.ic_rington),
+                                tint = Color.Unspecified,
+                                contentDescription = null
+                            )
+                        }
+                        IconButton(onClick = {
+                            if (reminderTime.value > 0) {
+                                val reminderWorkRequest =
+                                    OneTimeWorkRequestBuilder<NoteReminderWorker>()
+                                        .setInitialDelay(
+                                            reminderTime.value - System.currentTimeMillis(),
+                                            TimeUnit.MILLISECONDS
+                                        )
+                                        .setInputData(workDataOf("title" to titleTxt.value))
+                                        .setInputData(workDataOf("description" to descriptionTxt.value))
+                                        .build()
+                                WorkManager.getInstance().enqueue(reminderWorkRequest)
+                                val noteEntity = NoteEntity(
+                                    title = titleTxt.value,
+                                    content = descriptionTxt.value,
+                                    image = selectedImageUri.value?.let {uri->
+                                        getRealImagePath(
+                                            context,
+                                            uri
+                                        )
+                                    },
+                                    type = arguments?.getString("noteType")!!,
+                                    timeNotified = reminderTime.value
+                                )
+                                viewModel.insetNoteEntity(noteEntity)
+                                navController?.popBackStack()
+                            }else
+                                Toast.makeText(context,"please select a time",Toast.LENGTH_SHORT).show()
+
+                        }, modifier = Modifier.padding(end = 16.dp)) {
+                            Icon(
+                                painter = painterResource(id = com.adel.shared_ui.R.drawable.ic_download_circle),
+                                tint = Color.Unspecified,
+                                contentDescription = null
+                            )
+                        }
                     }
                 }
             }
         }) { padding ->
+
         Box(
             modifier = Modifier
                 .padding(padding)
@@ -191,7 +255,7 @@ fun NoteDetailScreenImpl(
                                 )
                         )
                         Text(
-                            text = if (arguments?.getString("noteType") == "work")
+                            text = if (arguments?.getString("noteType") == NoteType.Work.noteName)
                                 context.getString(com.adel.shared_ui.R.string.work)
                             else
                                 context.getString(com.adel.shared_ui.R.string.life_style),
@@ -236,19 +300,21 @@ fun NoteDetailScreenImpl(
                             modifier = Modifier.padding(16.dp),
                             initialText = "title",
                             txtStyle = MaterialTheme.typography.titleMedium,
-                            isEditing = isTitleEditing
+                            isEditing = isTitleEditing,
+                            text = titleTxt
                         )
-                        if (!isTitleEditing.value) {
-                            isDescriptionEditing.value = true
-                            DynamicTextView(
-                                modifier = Modifier.padding(16.dp),
-                                initialText = "description",
-                                txtStyle = MaterialTheme.typography.bodyLarge,
-                                isEditing = isDescriptionEditing
-                            )
-                            Spacer(modifier = Modifier.padding(top = 32.dp))
-                            BottomEditOption(isDescriptionEditing)
-                        }
+                        if (!justShow)
+                            isDescriptionEditing.value = !isTitleEditing.value
+                        DynamicTextView(
+                            modifier = Modifier.padding(16.dp),
+                            initialText = "description",
+                            txtStyle = MaterialTheme.typography.bodyLarge,
+                            isEditing = isDescriptionEditing,
+                            text = descriptionTxt
+                        )
+                        Spacer(modifier = Modifier.padding(top = 32.dp))
+                        BottomEditOption(isDescriptionEditing, openGallery)
+
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -257,8 +323,20 @@ fun NoteDetailScreenImpl(
                             horizontalArrangement = Arrangement.Center
 
                         ) {
-                            ImageViewWithGallery()
-
+                            if (bitmapState.value != null)
+                                Image(
+                                    modifier = Modifier
+                                        .size(200.dp)
+                                        .fillMaxWidth()
+                                        .background(
+                                            Color.Transparent,
+                                            shape = RoundedCornerShape(24.dp)
+                                        )
+                                        .clickable(onClick = { openGallery.value = true }),
+                                    contentDescription = "Select Image",
+                                    bitmap = bitmapState.value!!
+                                )
+                            ImageViewWithGallery(bitmapState, openGallery,selectedImageUri)
 
                         }
                     }
@@ -282,13 +360,13 @@ fun calculateGridHeight(): Dp {
 }
 
 @Composable
-fun BottomEditOption(isEditing: MutableState<Boolean>) {
+fun BottomEditOption(isEditing: MutableState<Boolean>, openGallery: MutableState<Boolean>) {
     var selectedTab by remember {
         mutableIntStateOf(0)
     }
     val tabs = arrayListOf<Int>(
-        com.adel.shared_ui.R.drawable.ic_link,
         com.adel.shared_ui.R.drawable.ic_smallcaps,
+        com.adel.shared_ui.R.drawable.ic_link,
     )
     if (isEditing.value)
         Row(
@@ -317,7 +395,11 @@ fun BottomEditOption(isEditing: MutableState<Boolean>) {
                     tabs.forEachIndexed { index, value ->
                         Tab(
                             selected = selectedTab == index,
-                            onClick = { selectedTab = index },
+                            onClick = {
+                                selectedTab = index
+                                if (index == 1)
+                                    openGallery.value = true
+                            },
                             icon = {
                                 Icon(
                                     painter = painterResource(id = value),
@@ -622,9 +704,7 @@ fun showDialog(
                 }
 
             }
-
         }
-
-
 }
+
 

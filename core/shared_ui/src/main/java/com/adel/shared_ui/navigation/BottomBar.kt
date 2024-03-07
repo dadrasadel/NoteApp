@@ -48,6 +48,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.adel.data.model.note.NoteType
 import com.adel.shared_ui.R
 import com.adel.shared_ui.widget.AppBottomSheet
 
@@ -133,11 +134,11 @@ fun BottomBar(
                                 modifier = Modifier.fillMaxWidth().clickable {
                                     if (index == 0)
                                         navController.navigate(
-                                            "${NavigationScreen.Screen.NoteDetail.route}?noteType=work"
+                                            "${NavigationScreen.Screen.NoteDetail.route}?noteType=${NoteType.Work.noteName}&"
                                         )
                                     else
                                         navController.navigate(
-                                            "${NavigationScreen.Screen.NoteDetail.route}?noteType=life style"
+                                            "${NavigationScreen.Screen.NoteDetail.route}?noteType=${NoteType.LifeStyle.noteName}&"
                                         )
                                     showSheet = false
                                 }

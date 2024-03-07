@@ -15,16 +15,16 @@ fun NavGraphBuilder.noteDetail(
     navController: NavController,
     bottomNavSate: MutableState<Boolean>
 ){
-    composable(route= "${NavigationScreen.Screen.NoteDetail.route}?noteType={noteType}",
+    composable(route= "${NavigationScreen.Screen.NoteDetail.route}?noteType={noteType}&userEntity={userEntity}",
         arguments = listOf(
             navArgument( "noteType"){
                 type= NavType.StringType
                 nullable=true
             },
-            /*navArgument("userEntity"){
+            navArgument("userEntity"){
                 nullable=true
                 type= NavType.StringType
-            }*/
+            }
         )
     ){ backStackEntry->
         val arguments= backStackEntry.arguments

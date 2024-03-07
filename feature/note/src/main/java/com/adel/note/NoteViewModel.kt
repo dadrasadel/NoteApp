@@ -29,16 +29,16 @@ class NoteViewModel @Inject constructor(
 
 
     init {
-        getNoteList()
+        getNoteList(System.currentTimeMillis())
     }
 
     /**
      * get notes based on type
      */
-   private fun getNoteList() {
+    fun getNoteList(timeInMillis:Long) {
         viewModelScope.launch(Dispatchers.IO) {
             coroutineScope {
-                getAllNotesUseCase.invoke().collect { noteList ->
+                getAllNotesUseCase.invoke(timeInMillis).collect { noteList ->
                     _noteList.update {
                         NotesState.Success(noteList,listOf(
                             TabHeaderItem(
@@ -47,11 +47,11 @@ class NoteViewModel @Inject constructor(
                             ),
                             TabHeaderItem(
                                 title = NoteType.Work.noteName,
-                                count = noteList.filter { it.type==NoteType.Work.type }.size
+                                count = noteList.filter { it.type==NoteType.Work.noteName }.size
                             ),
                             TabHeaderItem(
                                 title = NoteType.LifeStyle.noteName,
-                                count = noteList.filter { it.type==NoteType.LifeStyle.type }.size
+                                count = noteList.filter { it.type==NoteType.LifeStyle.noteName }.size
                             )
                         ))
                     }

@@ -48,6 +48,7 @@ dependencies {
     implementation(project(":util"))
     implementation (libs.constraintlayout.compose)
     implementation (libs.bundles.hilt)
+    implementation (libs.gson)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)

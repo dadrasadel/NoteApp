@@ -90,7 +90,7 @@ fun MainScreen(mainViewModel: MainViewModel = hiltViewModel(), onLauncherFinishe
                 AppNavigation(
                     modifier = Modifier.padding(paddingValues = it),
                     navController = navController,
-                    startScreen = NavigationScreen.Screen.NoteDetail.route,
+                    startScreen = NavigationScreen.Screen.Note.route,
                     bottomBarState = bottomBarState
                 )
             }
