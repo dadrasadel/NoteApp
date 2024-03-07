@@ -2,6 +2,8 @@
 
 NoteApp is a modern note-taking application built for Android using Jetpack Compose, Hilt for dependency injection, Room for local database storage, and following the MVVM + Multi-module architecture.
 
+https://github.com/AdelDdr/NoteApp/assets/31399024/8674867b-ab3b-4cb8-8e57-d20219ad113e
+
 ## Features
 
 - Create, read, update, and delete notes.
@@ -56,7 +58,10 @@ The application follows the MVVM (Model-View-ViewModel) architecture pattern for
 - **Navigation Component:** Android Jetpack's navigation library for managing navigation and deep linking.
 - **Lifecycle Components:** Set of libraries to build lifecycle-aware components.
 - **ViewModel:** Part of Android Architecture Components for managing UI-related data.
-- **Material Components:** Library that provides Material Design components.
+- **Materi
+
+
+al Components:** Library that provides Material Design components.
 - **JUnit & Mockito:** Testing libraries for unit testing and mocking dependencies.
 
 ## Contributing
