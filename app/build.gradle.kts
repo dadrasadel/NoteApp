@@ -2,17 +2,16 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.application)
-   alias(libs.plugins.ktlint.gradle)
+    alias(libs.plugins.modular.android.application)
+    alias(libs.plugins.modular.android.hilt)
+    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt)
+    id("kotlin-parcelize")
+    kotlin("kapt")
 }
 android {
     namespace = "com.adel.compose_modular"
-    defaultConfig {
 
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-    }
 
     buildTypes {
         release {
@@ -26,6 +25,7 @@ android {
 }
 
 dependencies {
+    //hilt
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx.v270)

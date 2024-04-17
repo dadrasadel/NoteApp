@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build_logic")
     repositories {
         include(":build_logic")
         gradlePluginPortal()
@@ -37,3 +38,5 @@ include(":feature:note")
 include(":feature:setting")
 include(":feature:message")
 include(":feature:note_detail")
+//include(":build_logic")
+//include(":build_logic:convention")
