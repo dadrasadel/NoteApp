@@ -74,4 +74,4 @@ Contributions are welcome! If you want to contribute to NoteApp, please fork the
 
 ## Author
 
- [Adel Dadras](https://github.com/AdelDdr)
+ [Adel Dadras](https://github.com/dadrasadel)
