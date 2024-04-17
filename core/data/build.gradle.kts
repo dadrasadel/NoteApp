@@ -1,23 +1,13 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
-    kotlin("kapt")
-    id("kotlin-parcelize")
-
+    alias(libs.plugins.modular.android.library)
+    alias(libs.plugins.modular.android.hilt)
+    alias(libs.plugins.modular.android.room)
+    alias(libs.plugins.modular.android.network)
 }
 
 android {
     namespace = "com.adel.data"
-    compileSdk = 34
-
-    defaultConfig {
-        minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -27,26 +17,12 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+
 }
 
 dependencies {
-    implementation(libs.bundles.network)
-    //hilt
-    implementation(libs.bundles.hilt)
-    kapt(libs.hilt.compiler)
     //add util
     implementation(project(":util"))
-    //room
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    kapt(libs.room.compiler)
     //test
     testImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
