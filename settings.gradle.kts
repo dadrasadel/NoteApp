@@ -1,7 +1,6 @@
 pluginManagement {
     includeBuild("build_logic")
     repositories {
-        include(":build_logic")
         gradlePluginPortal()
         maven("https://maven.google.com")
         mavenCentral()

@@ -176,7 +176,8 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
 room = { id = "androidx.room", version.ref = "room" }
 ktlint-gradle={id="org.jlleitschuh.gradle.ktlint",version="11.0.0"}
-#plugins
+
+#plugins logic
 modular-android-application = { id = "modular.android.application", version="unspecified"}
 modular-android-hilt = { id = "modular.android.hilt", version="unspecified"}
 modular-android-library = { id = "modular.android.library", version="unspecified"}

@@ -6,10 +6,10 @@ plugins {
 }
 group = "com.adel.compose_modular.buildlogic"
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
+//java {
+//    sourceCompatibility = JavaVersion.VERSION_17
+//    targetCompatibility = JavaVersion.VERSION_17
+//}
 
 dependencies{
     compileOnly(libs.androidx.room.gradle.plugin)

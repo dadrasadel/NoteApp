@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="max-line-length" severity="error">
+        <attributes>
+            <attribute name="line-length" value="120"/>
+        </attributes>
+    </issue>
+    <issue id="no-wildcard-imports" severity="error"/>
+</lint>

@@ -1,18 +1,14 @@
+//import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
     alias(libs.plugins.modular.android.application)
     alias(libs.plugins.modular.android.hilt)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
-    alias(libs.plugins.hilt)
-    id("kotlin-parcelize")
-    kotlin("kapt")
+//    alias(libs.plugins.ktlint.gradle)
 }
 android {
     namespace = "com.adel.compose_modular"
-
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -23,6 +19,18 @@ android {
         }
     }
 }
+//ktlint{
+//    android=true
+//    ignoreFailures=false
+//    reporters {
+//        reporter( ReporterType.HTML)
+//        reporter( ReporterType.PLAIN)
+//        reporter( ReporterType.SARIF)
+//        reporter( ReporterType.CHECKSTYLE)
+//        reporter( ReporterType.JSON)
+//        reporter( ReporterType.HTML)
+//    }
+//}
 
 dependencies {
     //hilt
